@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>TFSA Cash Flow</title>
+  <style>
+    * { 
+      box-sizing: border-box; 
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+    }
+    body { 
+      background: #0f172a; 
+      color: #f8fafc; 
+      margin: 0; 
+      padding: 24px 16px; 
+      display: flex; 
+      justify-content: center; 
+    }
+    .card { 
+      background: #1e293b; 
+      border-radius: 20px; 
+      padding: 20px; 
+      width: 100%; 
+      max-width: 420px; 
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3); 
+    }
+    h2 { 
+      margin: 0 0 4px; 
+      font-size: 1.1rem; 
+      color: #94a3b8; 
+      text-transform: uppercase; 
+      letter-spacing: 0.05em; 
+    }
+    .surplus-box { 
+      margin: 16px 0 24px; 
+      padding: 18px; 
+      border-radius: 14px; 
+      background: #0f172a; 
+      text-align: center; 
+    }
+    .surplus-amt { 
+      font-size: 2.2rem; 
+      font-weight: 800; 
+      color: #34d399; 
+      margin: 4px 0 0; 
+    }
+    .slider-group { 
+      margin-bottom: 20px; 
+    }
+    .slider-header { 
+      display: flex; 
+      justify-content: space-between; 
+      font-weight: 600; 
+      font-size: 0.95rem; 
+      margin-bottom: 8px; 
+    }
+    .slider-val { 
+      color: #38bdf8; 
+    }
+    input[type="range"] { 
+      width: 100%; 
+      height: 8px; 
+      border-radius: 4px; 
+      background: #334155; 
+      outline: none; 
+      accent-color: #38bdf8; 
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Monthly Surplus</h2>
+    <div class="surplus-box">
+      <div style="font-size: 0.85rem; color: #94a3b8;">Available to Invest in TFSA</div>
+      <div class="surplus-amt" id="surplus">$400</div>
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span>Take-Home Pay</span>
+        <span class="slider-val" id="incomeVal">$1550</span>
+      </div>
+      <input type="range" id="income" min="1000" max="3000" value="1550" step="25">
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span>The Eclipse (Gas + Ins)</span>
+        <span class="slider-val" id="carVal">$575</span>
+      </div>
+      <input type="range" id="car" min="200" max="900" value="575" step="25">
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span>Fixed Bills (Phone, Gym, Subs)</span>
+        <span class="slider-val" id="billsVal">$68</span>
+      </div>
+      <input type="range" id="bills" min="0" max="250" value="68" step="5">
+    </div>
+
+    <div class="slider-group">
+      <div class="slider-header">
+        <span>Food & Leisure</span>
+        <span class="slider-val" id="funVal">$507</span>
+      </div>
+      <input type="range" id="fun" min="50" max="800" value="507" step="25">
+    </div>
+  </div>
+
+  <script>
+    const income = document.getElementById('income');
+    const car = document.getElementById('car');
+    const bills = document.getElementById('bills');
+    const fun = document.getElementById('fun');
+    const surplus = document.getElementById('surplus');
+
+    function update() {
+      document.getElementById('incomeVal').innerText = '$' + income.value;
+      document.getElementById('carVal').innerText = '$' + car.value;
+      document.getElementById('billsVal').innerText = '$' + bills.value;
+      document.getElementById('funVal').innerText = '$' + fun.value;
+
+      const balance = Number(income.value) - (Number(car.value) + Number(bills.value) + Number(fun.value));
+      surplus.innerText = (balance < 0 ? '-$' : '$') + Math.abs(balance);
+      surplus.style.color = balance >= 400 ? '#34d399' : (balance >= 0 ? '#facc15' : '#f87171');
+    }
+
+    [income, car, bills, fun].forEach(input => input.addEventListener('input', update));
+  </script>
+</body>
+</html>
